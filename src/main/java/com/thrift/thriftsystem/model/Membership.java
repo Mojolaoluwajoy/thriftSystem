@@ -1,0 +1,47 @@
+package com.thrift.thriftsystem.model;
+
+
+import com.thrift.thriftsystem.enums.MembershipStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = "memberships")
+public class Membership {
+
+    @Id
+    private String id;
+
+    private String userId;
+    private String groupId;
+    private String payoutOrder;
+
+    @Builder.Default
+    private MembershipStatus status = MembershipStatus.ACTIVE;
+
+    @Builder.Default
+    private boolean hasPaidCurrentCycle=false;
+
+    @Builder.Default
+    private boolean hasCollected=false;
+
+    private LocalDateTime joinedAt;
+    private LocalDateTime collectionDate;
+
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @CreatedDate
+    private LocalDateTime updatedDate;
+
+}
