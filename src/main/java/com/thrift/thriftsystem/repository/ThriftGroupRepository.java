@@ -14,6 +14,6 @@ public interface ThriftGroupRepository extends MongoRepository<ThriftGroup,Strin
 
     List<ThriftGroup> findByStatus(GroupStatus status);
 
-    List<ThriftGroup> findByMemberIdContains(String memberId);
+    List<ThriftGroup> findByMemberIdsContains(String memberId);
     List<ThriftGroup> findByIdAndAdminId(String id,String adminId);
 }

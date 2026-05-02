@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
@@ -28,7 +29,10 @@ public class Contribution {
 
     private BigDecimal amount;
     private String currency;
-
+private Integer cycleNumber;
+   // @CreatedDate
+   // private LocalDateTime createdDate;
+    @LastModifiedDate
     private String paystackReference;
     private String paystackTransactionId;
 
