@@ -30,6 +30,7 @@ public class User {
 
     @Indexed(unique = true)
     private String phoneNumber;
+    private String whatsappNumber;
 
     private String firstName;
     private String lastName;
