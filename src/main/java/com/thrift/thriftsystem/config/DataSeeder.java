@@ -5,6 +5,7 @@ import com.thrift.thriftsystem.model.Currency;
 import com.thrift.thriftsystem.model.User;
 import com.thrift.thriftsystem.repository.CurrencyRepository;
 import com.thrift.thriftsystem.repository.UserRepository;
+import com.thrift.thriftsystem.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,7 @@ public class DataSeeder implements CommandLineRunner {
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CurrencyService currencyService;
 
     @Value("${SUPER_ADMIN_EMAIL")
     private String superAdminEmail;
@@ -44,6 +46,7 @@ public class DataSeeder implements CommandLineRunner {
     public void run(String... args){
         seedSuperAdmin();
         seedCurrencies();
+        currencyService.updateExchangeRates();
     }
 
     private void seedCurrencies() {
@@ -106,6 +109,5 @@ public class DataSeeder implements CommandLineRunner {
             }
         });
     }
-
 
 }

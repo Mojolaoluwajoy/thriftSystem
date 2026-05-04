@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/v1/contributions")
 @RequiredArgsConstructor
 public class ContributionController {
     private final ContributionService contributionService;
@@ -22,15 +22,15 @@ public class ContributionController {
     @PostMapping
     public ResponseEntity<ApiResponse> initiateContribution(@RequestBody ContributionRequest contributionRequest){
         ContributionResponse response=contributionService.initiateContribution(contributionRequest);
-        return new ResponseEntity<>(ApiResponse.success("Contribution initiated",response),HttpStatus.OK);
+        return new ResponseEntity<>(ApiResponse.success("Contribution initiated",response),HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/my-contributions")
     public ResponseEntity<ApiResponse> getContribution(){
         return new ResponseEntity<>(ApiResponse.success("Your Contributions loaded",contributionService.getMyContributions()),HttpStatus.OK);
     }
-    @PostMapping
-    public ResponseEntity<ApiResponse> getGroupContribution(@RequestBody @Valid String groupId){
+    @GetMapping("/group/{groupId}")
+    public ResponseEntity<ApiResponse> getGroupContribution(@PathVariable String groupId){
         List<ContributionResponse> response=contributionService.getGroupContributions(groupId);
         return new ResponseEntity<>(ApiResponse.success("Group Contributions loaded",response),HttpStatus.OK);
     }

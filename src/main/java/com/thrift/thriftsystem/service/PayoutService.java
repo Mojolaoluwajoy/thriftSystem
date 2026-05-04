@@ -2,6 +2,7 @@ package com.thrift.thriftsystem.service;
 
 import com.thrift.thriftsystem.dto.request.PayoutRequest;
 import com.thrift.thriftsystem.dto.response.PayoutResponse;
+import com.thrift.thriftsystem.enums.PayoutStatus;
 import com.thrift.thriftsystem.exception.BadRequestException;
 import com.thrift.thriftsystem.exception.ResourceNotFoundException;
 import com.thrift.thriftsystem.model.Membership;
@@ -47,7 +48,7 @@ throw new BadRequestException("Payout already scheduled for this cycle");
   return PayoutMapper.toResponse(payout);
 
     }
-    public List <PayoutResponse> getMyPayout(){
+    public List <PayoutResponse> getMyPayouts(){
         User currentUser = userService.getCurrentUser();
         return payoutRepository.findByUserId(currentUser.getId())
                 .stream()
@@ -60,5 +61,21 @@ throw new BadRequestException("Payout already scheduled for this cycle");
                 .stream()
                 .map(PayoutMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    public PayoutResponse processPayout(String payoutId) {
+        Payout payout = payoutRepository.findById(payoutId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Payout not found"));
+
+        if (payout.getStatus() != PayoutStatus.PENDING) {
+            throw new BadRequestException("Payout is not in pending state");
+        }
+
+        payout.setStatus(PayoutStatus.PROCESSING);
+        payoutRepository.save(payout);
+
+        log.info("Payout processing: {}", payoutId);
+        return PayoutMapper.toResponse(payout);
     }
 }

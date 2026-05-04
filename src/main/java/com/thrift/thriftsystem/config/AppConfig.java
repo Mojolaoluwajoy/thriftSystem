@@ -2,7 +2,9 @@ package com.thrift.thriftsystem.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Getter
 @Configuration
@@ -27,6 +29,10 @@ public class AppConfig {
         return generateWhatsappLink(supportWhatsapp,"Hello ,i need help with the thrift system app");
     }
 
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
 
 }

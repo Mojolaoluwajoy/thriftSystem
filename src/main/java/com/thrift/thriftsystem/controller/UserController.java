@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,25 +17,26 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
+    @GetMapping("/me")
     public ResponseEntity<ApiResponse> getUserProfile(){
         return new ResponseEntity<>(ApiResponse.success("Profile found",userService.getCurrentUserProfile()), HttpStatus.OK);
     }
-    @PostMapping
-    public ResponseEntity<ApiResponse> getUserById(@RequestBody @Valid String id){
-        return new ResponseEntity<>(ApiResponse.success("Uset found",userService.getUserById(id)), HttpStatus.OK);
+    @GetMapping("/id")
+    public ResponseEntity<ApiResponse> getUserById(@PathVariable String id){
+        return new ResponseEntity<>(ApiResponse.success("User retrieved",userService.getUserById(id)), HttpStatus.OK);
     }
     @GetMapping
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public ResponseEntity<ApiResponse> getAllUsers(){
         return new ResponseEntity<>(ApiResponse.success("All found",userService.getAllUsers()), HttpStatus.OK);
     }
-    @PostMapping
-    public ResponseEntity<ApiResponse> updateWhatsappNumber(@RequestBody @Valid String whatsappNumber){
+    @PatchMapping("me/whatsapp")
+    public ResponseEntity<ApiResponse> updateWhatsappNumber(@RequestParam String whatsappNumber){
         return new ResponseEntity<>(ApiResponse.success("whatsapp number updated",userService.updateWhatsappNumber(whatsappNumber)), HttpStatus.OK);
 
     }
-    @PostMapping
-    public ResponseEntity<ApiResponse> updateProfilePicture(@RequestBody @Valid String profilePictureUrl){
+    @PatchMapping("me/profile-picture")
+    public ResponseEntity<ApiResponse> updateProfilePicture(@RequestParam String profilePictureUrl){
         return new ResponseEntity<>(ApiResponse.success("profile picture updated",userService.updateProfilePicture(profilePictureUrl)), HttpStatus.OK);
     }
 }
