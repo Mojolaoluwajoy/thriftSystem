@@ -24,7 +24,7 @@ public class Membership {
 
     private String userId;
     private String groupId;
-    private String payoutOrder;
+    private Integer payoutOrder;
 
     @Builder.Default
     private MembershipStatus status = MembershipStatus.ACTIVE;

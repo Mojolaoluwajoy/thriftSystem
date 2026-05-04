@@ -25,7 +25,7 @@ public class JwtUtil {
     private String jwtExpiration;
 
 
-    private String createToken( String email) {
+    public String generateToken( String email) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                 .claims(claims)

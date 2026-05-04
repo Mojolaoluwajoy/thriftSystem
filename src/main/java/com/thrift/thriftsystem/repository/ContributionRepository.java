@@ -18,6 +18,6 @@ public interface ContributionRepository extends MongoRepository<Contribution,Str
     List<Contribution> findByGroupIdAndCycleNumber(String groupId,String cycleNumber);
     List<Contribution> findByPaystackReference(String paystackReference);
     List<Contribution> findByStatusAndDueDateBefore(ContributionStatus status, LocalDateTime dueDate);
-    boolean existsByUserIdAndGroupIdAndCycleNumber(String userId,String groupId,String cycleNumber);
+    boolean existsByUserIdAndGroupIdAndCycleNumber(String userId,String groupId,int cycleNumber);
 
 }

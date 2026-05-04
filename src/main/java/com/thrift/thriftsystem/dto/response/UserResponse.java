@@ -21,6 +21,8 @@ public class UserResponse {
     private String firstName;
     private String lastName;
     private String profilePicture;
+    private String whatsappNumber;
+    private Role role;
     private Set<Role> roles;
     private boolean enabled;
     private boolean emailVerified;

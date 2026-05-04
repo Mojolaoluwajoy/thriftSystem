@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class CreateGroupRequest {
@@ -27,8 +28,8 @@ public class CreateGroupRequest {
     @NotNull(message= "Frequency is required")
     private ContributionFrequency frequency;
 
-    @NotNull(message = "Start date is required")
-    private LocalDate startDate;
+   @NotNull(message = "Start date is required")
+    private LocalDateTime startDate;
 
     @NotNull(message = "Total members is required")
     @Positive(message = "Total members must be positive")

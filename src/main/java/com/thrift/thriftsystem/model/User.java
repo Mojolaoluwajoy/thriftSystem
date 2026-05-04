@@ -19,16 +19,13 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collation = "users")
+@Document(collection = "users")
 public class User {
 
     @Id
     private String id;
 
-    @Indexed(unique = true)
     private String email;
-
-    @Indexed(unique = true)
     private String phoneNumber;
     private String whatsappNumber;
 

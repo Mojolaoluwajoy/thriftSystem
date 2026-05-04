@@ -14,6 +14,8 @@ public interface PayoutRepository extends MongoRepository<Payout,String> {
 
     List<Payout> findByGroupId(String groupId);
 
+    List<Payout> findByUserId(String userId);
+
     List<Payout> findByUserIdAndGroupId(String userId,String groupId);
 
     Optional<Payout> findByUserIdAndGroupIdAndCycleNumber(String userId, String groupId, Integer cycleNumber);
