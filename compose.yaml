@@ -9,6 +9,8 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
     ports:
       - '27017'
+    env_file:
+      - .env
 
     volumes:
       - mongodb-data:/data/db

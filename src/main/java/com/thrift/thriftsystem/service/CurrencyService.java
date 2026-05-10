@@ -1,15 +1,16 @@
 package com.thrift.thriftsystem.service;
 
 import com.thrift.thriftsystem.exception.BadRequestException;
+import com.thrift.thriftsystem.integration.ExchangeRateClient;
 import com.thrift.thriftsystem.model.Currency;
 import com.thrift.thriftsystem.repository.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 
@@ -19,13 +20,10 @@ import java.util.Map;
 public class CurrencyService {
 
     private final CurrencyRepository currencyRepository;
-    private final RestTemplate restTemplate;
+    private final ExchangeRateClient exchangeRateClient;
 
     @Value("${EXCHANGE_RATE_API_KEY}")
     private String apiKey;
-
-    @Value("${EXCHANGE_RATE_BASE_URL}")
-    private String baseUrl;
 
     public BigDecimal convert(BigDecimal amount, String fromCurrency,
                               String toCurrency) {
@@ -40,14 +38,13 @@ public class CurrencyService {
                         "Currency not found: " + toCurrency));
 
         BigDecimal inNgn = amount.multiply(from.getExchangeRate());
-        return inNgn.divide(to.getExchangeRate(), 2,
-                java.math.RoundingMode.HALF_UP);
+        return inNgn.divide(to.getExchangeRate(), 2, RoundingMode.HALF_UP);
     }
 
     public void updateExchangeRates() {
         try {
-            String url = baseUrl + "/" + apiKey + "/latest/NGN";
-            Map response = restTemplate.getForObject(url, Map.class);
+            Map<String, Object> response =
+                    exchangeRateClient.getLatestRates(apiKey);
 
             if (response != null && response.get("conversion_rates") != null) {
                 Map<String, Double> rates =

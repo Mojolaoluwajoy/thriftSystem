@@ -28,11 +28,4 @@ public class AppConfig {
     public String getSupportWhatsappLink(String phoneNumber) {
         return generateWhatsappLink(supportWhatsapp,"Hello ,i need help with the thrift system app");
     }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
-
 }
