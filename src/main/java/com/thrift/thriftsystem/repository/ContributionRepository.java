@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ContributionRepository extends MongoRepository<Contribution,String> {
@@ -16,7 +17,7 @@ public interface ContributionRepository extends MongoRepository<Contribution,Str
     List<Contribution> findByUserId(String userId);
     List<Contribution> findByGroupId(String groupId);
     List<Contribution> findByGroupIdAndCycleNumber(String groupId,String cycleNumber);
-    List<Contribution> findByPaystackReference(String paystackReference);
+    Optional<Contribution> findByPaystackReference(String paystackReference);
     List<Contribution> findByStatusAndDueDateBefore(ContributionStatus status, LocalDateTime dueDate);
     boolean existsByUserIdAndGroupIdAndCycleNumber(String userId,String groupId,int cycleNumber);
 
