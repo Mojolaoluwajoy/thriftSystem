@@ -1,9 +1,14 @@
 package com.thrift.thriftsystem.service;
 
+import com.thrift.thriftsystem.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -11,6 +16,9 @@ import org.springframework.stereotype.Service;
 public class SchedulerService {
 
     private final CurrencyService currencyService;
+    private final HolidayService holidayService;
+    private final EmailService emailService;
+    private final UserService userService;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void updateExchangeRates() {
@@ -19,5 +27,18 @@ public class SchedulerService {
         log.info("Scheduled exchange rate update completed.");
     }
 
+    @Scheduled(cron = "0 0 8 * * *")
+    public void sendHolidayNotifications() {
+        LocalDate today = LocalDate.now();
 
+        if (holidayService.isPublicHoliday(today)) {
+            String holidayName = holidayService.getHolidayName(today);
+            List<User> users = userService.getAllUserModels();
+
+            users.forEach(user ->
+                    emailService.sendHolidayNotification(user, holidayName));
+
+            log.info("Holiday notifications sent to {} users", users.size());
+        }
+    }
 }
