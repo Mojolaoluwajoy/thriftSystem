@@ -58,5 +58,7 @@ public class UserService {
         log.info("Profile picture updated for : {}", user.getEmail());
         return UserMapper.toResponse(user);
     }
-    
+    public List<User> getAllUserModels() {
+        return userRepository.findAll();
+    }
 }
