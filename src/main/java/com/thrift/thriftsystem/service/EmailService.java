@@ -97,4 +97,26 @@ public class EmailService {
             log.error("Failed to send group jointed notification to {}: {}",user.getEmail(),e.getMessage());
         }
     }
+
+    public void sendHolidayNotification(User user, String holidayName) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail);
+            message.setTo(user.getEmail());
+            message.setSubject("Public Holiday Notice - " + holidayName);
+            message.setText(
+                    "Hi " + user.getFirstName() + ",\n\n" +
+                            "Today is a public holiday — " + holidayName + "!\n\n" +
+                            "Your thrift contributions scheduled for today have been " +
+                            "automatically moved to the next working day.\n\n" +
+                            "Best regards,\n" +
+                            "Thrift System Team"
+            );
+            javaMailSender.send(message);
+            log.info("Holiday notification sent to: {}", user.getEmail());
+        } catch (Exception e) {
+            log.error("Failed to send holiday notification to {}: {}",
+                    user.getEmail(), e.getMessage());
+        }
+    }
 }
