@@ -40,4 +40,20 @@ public class HolidayService {
     private boolean isWeekend(LocalDate date) {
         return date.getDayOfWeek().getValue() >= 6;
     }
+
+    public String getHolidayName(LocalDate date) {
+        try {
+            List<Map<String, Object>> holidays =
+                    holidayClient.getPublicHolidays(
+                            date.getYear(), COUNTRY_CODE);
+            return holidays.stream()
+                    .filter(h -> h.get("date").equals(date.toString()))
+                    .map(h -> (String) h.get("name"))
+                    .findFirst()
+                    .orElse("Public Holiday");
+        } catch (Exception e) {
+            log.error("Failed to get holiday name: {}", e.getMessage());
+            return "Public Holiday";
+        }
+    }
 }

@@ -18,4 +18,6 @@ public class SchedulerService {
         currencyService.updateExchangeRates();
         log.info("Scheduled exchange rate update completed.");
     }
+
+
 }
